@@ -1,0 +1,8 @@
+import { config } from "dotenv";
+import { drizzle } from "drizzle-orm/neon-http";
+import * as schema from "./schemas/index";
+
+config({ path: "../../.env" });
+
+// biome-ignore lint/style/noNonNullAssertion: We are sure about the presence
+export const db = drizzle(process.env.DATABASE_URL!, { schema });
