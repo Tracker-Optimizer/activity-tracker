@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/actions/get-session";
-import { SignInForm } from "@/components/signin-form";
+import { SignInForm } from "@/app/(auth)/_components/signin-form";
 import {
   Card,
   CardContent,
@@ -18,18 +18,16 @@ export default async function SignInPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-md">
-      <Card>
-        <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <SignInForm />
-        </CardContent>
-      </Card>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Login to your account</CardTitle>
+        <CardDescription>
+          Enter your email below to login to your account
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <SignInForm />
+      </CardContent>
+    </Card>
   );
 }
