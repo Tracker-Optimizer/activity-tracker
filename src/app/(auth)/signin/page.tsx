@@ -14,7 +14,7 @@ export default async function SignInPage() {
   console.log("session:", session);
 
   if (session) {
-    redirect("/");
+    redirect("/dashboard");
   }
 
   return (
