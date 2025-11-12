@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { auth } from "@/lib/auth/auth";
+import LogoutButton from "./logout-button";
 
 export default function UserMenu({ user }: { user: User }) {
   console.log("user:", user);
@@ -25,7 +26,9 @@ export default function UserMenu({ user }: { user: User }) {
         <DropdownMenuItem>
           <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>Logout</DropdownMenuItem>
+        <DropdownMenuItem>
+          <LogoutButton />
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
