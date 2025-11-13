@@ -9,6 +9,7 @@ export default function LogoutButton() {
 
   return (
     <Button
+      variant="link"
       onClick={() =>
         authClient.signOut({
           fetchOptions: {
