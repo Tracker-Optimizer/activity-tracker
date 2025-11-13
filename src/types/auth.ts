@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { auth } from "@/lib/auth/auth";
 
 export const signInFormSchema = z.object({
   email: z.email({ message: "Please enter a valid email address" }),
@@ -22,3 +23,7 @@ export const signUpFormSchema = z
 
 export type SignInFormValues = z.infer<typeof signInFormSchema>;
 export type SignUpFormValues = z.infer<typeof signUpFormSchema>;
+
+export type Account = Awaited<
+  ReturnType<typeof auth.api.listUserAccounts>
+>[number];
