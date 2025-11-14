@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Drizzle generated meta files
+drizzle/migrations/meta/
+**/drizzle/migrations/meta/
