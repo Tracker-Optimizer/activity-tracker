@@ -45,7 +45,7 @@ Then fill the .env file with the required values.
 
 ### Database (Neon PostgreSQL)
 
-Get the pooled connection string from your Neon project.
+Get the direct connection string from your Neon project.
 
 ```bash
 DATABASE_URL=postgresql://USER:PASSWORD@HOST/neondb?sslmode=require&channel_binding=require
@@ -142,7 +142,7 @@ src/
 ├── components/ # UI components
 ├── actions/ # Server actions
 ├── drizzle/ # Database schema and config
-│ ├── schema.ts
+│ ├── schemas/index.ts # Barrel file to export all schemas
 │ ├── db.ts
 ├── lib/ # Auth, email, utilities
 │ ├── auth/
@@ -155,7 +155,7 @@ public/ # Static assets
 Recommended format:
 
 ```bash
-feature/<issue-number>-short-description
+feat/<issue-number>-short-description
 fix/<issue-number>-bug-description
 chore/<issue-number>-task-name
 ```
@@ -170,7 +170,7 @@ chore/7-create-readme
 
 ### Database
 
-Use a dedicated Neon database for production.
+Use the dedicated Neon branch for production.
 
 ### Hosting
 
