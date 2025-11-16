@@ -5,29 +5,8 @@ import { auth } from "@/lib/auth/auth"; // Better Auth instance
 
 export async function POST(request: NextRequest) {
   try {
-    // TEMP DEBUG: log what auth-related headers we see (without values)
-    const cookieHeader = request.headers.get("cookie");
-    const authHeader = request.headers.get("authorization");
-    console.log(
-      "[/api/activities] cookie present:",
-      !!cookieHeader,
-      "len:",
-      cookieHeader?.length ?? 0,
-    );
-    console.log(
-      "[/api/activities] authorization present:",
-      !!authHeader,
-      "len:",
-      authHeader?.length ?? 0,
-    );
-
     // 1. Validate session with Better Auth
     const session = await auth.api.getSession({ headers: request.headers });
-
-    console.log(
-      "[/api/activities] session user id:",
-      session?.user?.id ?? null,
-    );
 
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
