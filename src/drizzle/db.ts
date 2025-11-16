@@ -1,8 +1,10 @@
-import { config } from "dotenv";
-import { drizzle } from "drizzle-orm/neon-http";
+import { Pool } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-serverless";
 import * as schema from "./schemas/index";
 
-config({ path: "../../.env" });
+const pool = new Pool({
+  // biome-ignore lint/style/noNonNullAssertion: We are sure about the presence
+  connectionString: process.env.DATABASE_URL!,
+});
 
-// biome-ignore lint/style/noNonNullAssertion: We are sure about the presence
-export const db = drizzle(process.env.DATABASE_URL!, { schema });
+export const db = drizzle(pool, { schema });
