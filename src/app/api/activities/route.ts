@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { userId, activities: activityData, metadata } = body ?? {};
 
-    // 3. Optional: verify userId matches authenticated user if provided
     if (userId && userId !== authenticatedUserId) {
+      // 3. Optional: verify userId matches authenticated user if provided
       console.error(
         `⚠️  User ${authenticatedUserId} attempted to insert data for ${userId}`,
       );
@@ -29,8 +29,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 4. Validate payload
     if (!Array.isArray(activityData) || activityData.length === 0) {
+      // 4. Validate payload
       return NextResponse.json(
         { error: "Invalid payload: activities must be a non-empty array" },
         { status: 400 },
