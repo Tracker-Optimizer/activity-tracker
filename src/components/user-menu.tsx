@@ -21,6 +21,11 @@ export default function UserMenu({ user }: { user: User }) {
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuItem>
           <Button variant="link" asChild>
+            <Link href="/dashboard">Dashboard</Link>
+          </Button>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Button variant="link" asChild>
             <Link href="/profile">Profile</Link>
           </Button>
         </DropdownMenuItem>

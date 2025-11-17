@@ -10,3 +10,5 @@ export async function getCurrentSession() {
 
   return session;
 }
+
+export type Session = Awaited<ReturnType<typeof getCurrentSession>>;
