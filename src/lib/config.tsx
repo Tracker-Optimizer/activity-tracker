@@ -51,8 +51,6 @@ export const siteConfig = {
     links: [
       { id: 1, name: "Home", href: "#hero" },
       { id: 2, name: "How it Works", href: "#bento" },
-      { id: 3, name: "Features", href: "#features" },
-      { id: 4, name: "Pricing", href: "#pricing" },
     ],
   },
   hero: {
@@ -912,7 +910,9 @@ export const siteConfig = {
         <p>
           With #CyberShield&apos;s AI-powered security systems, our data
           protection levels are unmatched.
-          <Highlight>Ensuring safety and trust in digital spaces.</Highlight>{" "}
+          <Highlight>
+            Ensuring safety and trust in digital spaces.
+          </Highlight>{" "}
           Redefining cybersecurity standards.
         </p>
       ),
@@ -940,7 +940,9 @@ export const siteConfig = {
         <p>
           #VentureAI&apos;s insights into startup ecosystems have been
           invaluable for our growth and funding strategies.
-          <Highlight>Empowering startups with data-driven decisions.</Highlight>{" "}
+          <Highlight>
+            Empowering startups with data-driven decisions.
+          </Highlight>{" "}
           A catalyst for startup success.
         </p>
       ),
