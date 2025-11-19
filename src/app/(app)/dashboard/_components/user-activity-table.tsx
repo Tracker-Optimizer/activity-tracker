@@ -1,11 +1,16 @@
 "use client";
 
+import { SearchIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import type { GetUserTrackedData } from "@/actions/get-user-tracked-data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import {
   Select,
   SelectContent,
@@ -101,19 +106,21 @@ export function UserActivityTable({ activities }: UserActivityTableProps) {
     <Card className="px-4 py-4 lg:px-6">
       <CardHeader className="flex flex-col gap-4 px-0 py-0">
         <div className="flex w-full flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <CardTitle className="text-lg font-semibold">
-              Activity log
-            </CardTitle>
-          </div>
-          <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
-            <Input
-              placeholder="Search by app, title, or URL"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              className="w-full"
-              aria-label="Search tracked activity"
-            />
+          <CardTitle className="text-lg font-semibold flex-1">
+            Activity log
+          </CardTitle>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <InputGroup className="w-96 ml-auto">
+              <InputGroupInput
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                aria-label="Search tracked activity"
+                placeholder="Search by app, title, or URL"
+              />
+              <InputGroupAddon>
+                <SearchIcon />
+              </InputGroupAddon>
+            </InputGroup>
             <Select
               value={processFilter}
               onValueChange={(value) => {
@@ -144,7 +151,7 @@ export function UserActivityTable({ activities }: UserActivityTableProps) {
                 <TableHead className="w-[350px] max-w-[350px]">
                   Details
                 </TableHead>
-                <TableHead>Process</TableHead>
+                <TableHead className="w-[200px]">Process</TableHead>
                 <TableHead className="w-32 text-right">Duration</TableHead>
                 <TableHead className="w-48">Start</TableHead>
                 <TableHead className="w-48">End</TableHead>
@@ -165,21 +172,19 @@ export function UserActivityTable({ activities }: UserActivityTableProps) {
                   return (
                     <TableRow key={activity.id}>
                       <TableCell className="align-top">
-                        <p
-                          className="line-clamp-3 text-sm text-muted-foreground"
-                          style={{ maxWidth: 350 }}
-                        >
+                        <p className="truncate text-sm text-muted-foreground">
                           {activityDetail}
                         </p>
                       </TableCell>
-                      <TableCell>
-                        <div className="flex flex-col">
+                      <TableCell className="w-[200px]">
+                        <div className="flex gap-2 items-center">
                           <span className="font-medium leading-none">
                             {processName}
                           </span>
                           {activity.isUserActive === false ? (
                             <Badge
-                              variant="outline"
+                              variant="secondary"
+                              size="sm"
                               className="mt-1 w-fit text-xs uppercase tracking-wide"
                             >
                               Idle
