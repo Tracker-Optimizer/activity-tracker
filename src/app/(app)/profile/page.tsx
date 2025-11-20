@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getAccounts } from "@/actions/get-accounts";
 import { getCurrentSession } from "@/actions/get-session";
+import { SiteHeader } from "@/components/site-header";
 import UserRepos from "@/components/user-repos";
 import AccountLinking from "./_components/account-linking";
 
@@ -10,25 +11,24 @@ export default async function ProfilePage() {
   const nonCredentialsAccounts = accounts.filter(
     (a) => a.providerId !== "credential",
   );
-  console.log("nonCredentialsAccounts:", nonCredentialsAccounts);
-  if (!session) {
-    redirect("/signin");
-  }
+
+  if (!session) redirect("/signin");
 
   return (
-    <div>
-      <h1>Profile</h1>
-      <AccountLinking accounts={nonCredentialsAccounts} />
+    <>
+      <SiteHeader title="Profile" />
 
-      <UserRepos />
+      <div>
+        <h1>Profile</h1>
+        <AccountLinking accounts={nonCredentialsAccounts} />
 
-      <section>
-        <h3>This is your session:</h3>
-        <pre>{JSON.stringify(session, null, 2)}</pre>
-      </section>
-    </div>
+        <UserRepos />
+
+        <section>
+          <h3>This is your session:</h3>
+          <pre>{JSON.stringify(session, null, 2)}</pre>
+        </section>
+      </div>
+    </>
   );
-
-  // Request additional scopes
-  // https://www.better-auth.com/docs/concepts/oauth#requesting-additional-scopes
 }
