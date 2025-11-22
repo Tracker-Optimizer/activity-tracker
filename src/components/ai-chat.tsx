@@ -1,20 +1,14 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import {
-  DefaultChatTransport,
-  lastAssistantMessageIsCompleteWithToolCalls,
-} from "ai";
+import { lastAssistantMessageIsCompleteWithToolCalls } from "ai";
 import { useState } from "react";
 import { Chat as ChatUI } from "@/components/ui/chat";
 
 export default function Chat() {
-  const { messages, sendMessage, addToolOutput, status, stop } = useChat({
-    transport: new DefaultChatTransport({
-      api: "/api/chat",
-      credentials: "include",
-    }),
+  const [model, setModel] = useState("gemini-1.5-pro");
 
+  const { messages, sendMessage, addToolOutput, status, stop } = useChat({
     sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
   });
 
@@ -27,12 +21,12 @@ export default function Chat() {
   const handleSubmit = (e?: { preventDefault?: () => void }) => {
     e?.preventDefault?.();
     if (!input.trim()) return;
-    sendMessage({ text: input });
+    sendMessage({ text: input }, { body: { model } });
     setInput("");
   };
 
   const append = (message: { role: "user"; content: string }) => {
-    sendMessage({ text: message.content });
+    sendMessage({ text: message.content }, { body: { model } });
   };
 
   const isLoading = status === "submitted" || status === "streaming";
@@ -49,6 +43,8 @@ export default function Chat() {
         stop={stop}
         append={append}
         addToolOutput={addToolOutput}
+        model={model}
+        onModelChange={setModel}
       />
     </div>
   );

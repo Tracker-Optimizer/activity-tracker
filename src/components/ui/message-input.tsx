@@ -28,6 +28,7 @@ interface MessageInputBaseProps
   isGenerating: boolean;
   enableInterrupt?: boolean;
   transcribeAudio?: (blob: Blob) => Promise<string>;
+  actions?: React.ReactNode;
 }
 
 interface MessageInputWithoutAttachmentProps extends MessageInputBaseProps {
@@ -53,6 +54,7 @@ export function MessageInput({
   isGenerating,
   enableInterrupt = true,
   transcribeAudio,
+  actions,
   ...props
 }: MessageInputProps) {
   const [isDragging, setIsDragging] = useState(false);
@@ -253,6 +255,7 @@ export function MessageInput({
       </div>
 
       <div className="absolute right-3 top-3 z-20 flex gap-2">
+        {actions}
         {props.allowAttachments && (
           <Button
             type="button"

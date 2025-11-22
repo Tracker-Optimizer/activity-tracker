@@ -1,3 +1,4 @@
+import { google } from "@ai-sdk/google";
 import { openai } from "@ai-sdk/openai";
 import { convertToModelMessages, streamText, tool } from "ai";
 import { z } from "zod";
@@ -19,11 +20,17 @@ export async function POST(req: Request) {
   const cookieHeader = req.headers.get("Cookie") || "";
 
   // 3. Parse request body
-  const { messages } = await req.json();
+  const { messages, model } = await req.json();
+
+  // Select model based on client request
+  const selectedModel =
+    model === "gemini-1.5-pro"
+      ? google("gemini-1.5-pro-latest")
+      : openai("gpt-4-turbo");
 
   // 4. Define AI SDK tools that call MCP tools
   const result = streamText({
-    model: openai("gpt-4-turbo"),
+    model: selectedModel,
     messages: convertToModelMessages(messages),
     tools: {
       get_activity_summary: tool({

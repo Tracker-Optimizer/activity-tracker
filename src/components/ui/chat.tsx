@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ArrowDown, Sparkles, ThumbsDown, ThumbsUp } from "lucide-react";
 import {
   forwardRef,
   type ReactElement,
@@ -14,6 +14,13 @@ import { CopyButton } from "@/components/ui/copy-button";
 import { MessageInput } from "@/components/ui/message-input";
 import { MessageList } from "@/components/ui/message-list";
 import { PromptSuggestions } from "@/components/ui/prompt-suggestions";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useAutoScroll } from "@/hooks/use-auto-scroll";
 import { cn } from "@/lib/utils/index";
 
@@ -35,6 +42,8 @@ interface ChatPropsBase {
   setMessages?: (messages: any[]) => void;
   transcribeAudio?: (blob: Blob) => Promise<string>;
   addToolOutput?: (args: any) => void;
+  model?: string;
+  onModelChange?: (value: string) => void;
 }
 
 interface ChatPropsWithoutSuggestions extends ChatPropsBase {
@@ -63,6 +72,8 @@ export function Chat({
   setMessages,
   transcribeAudio,
   addToolOutput,
+  model,
+  onModelChange,
 }: ChatProps) {
   const lastMessage = messages.at(-1);
   const isEmpty = messages.length === 0;
@@ -221,16 +232,35 @@ export function Chat({
         handleSubmit={handleSubmit}
       >
         {({ files, setFiles }) => (
-          <MessageInput
-            value={input}
-            onChange={handleInputChange}
-            allowAttachments
-            files={files}
-            setFiles={setFiles}
-            stop={handleStop}
-            isGenerating={isGenerating}
-            transcribeAudio={transcribeAudio}
-          />
+          <div className="flex flex-col gap-2 relative">
+            <MessageInput
+              value={input}
+              onChange={handleInputChange}
+              files={files}
+              setFiles={setFiles}
+              stop={handleStop}
+              isGenerating={isGenerating}
+              transcribeAudio={transcribeAudio}
+              className={model ? "pr-54" : ""}
+              actions={
+                model &&
+                onModelChange && (
+                  <Select value={model} onValueChange={onModelChange}>
+                    <SelectTrigger className="h-8 w-fit gap-2 border-none bg-muted/50 px-2 text-xs shadow-none hover:bg-muted/80 focus:ring-0">
+                      <Sparkles className="h-3 w-3 text-blue-500" />
+                      <SelectValue placeholder="Select Model" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="gpt-4-turbo">GPT-4 Turbo</SelectItem>
+                      <SelectItem value="gemini-2.5-flash">
+                        Gemini 2.5 Flash
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                )
+              }
+            />
+          </div>
         )}
       </ChatForm>
     </ChatContainer>
