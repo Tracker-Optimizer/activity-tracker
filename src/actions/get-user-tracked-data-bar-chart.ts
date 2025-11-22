@@ -5,7 +5,6 @@ import { startOfDay } from "@/lib/utils/charts";
 
 export async function getUserTrackedDataBarChart(id: string) {
   const timerLabel = `chart:query:${id}`;
-  console.time(timerLabel);
 
   const today = startOfDay(new Date());
   const rangeStart = new Date(today);
@@ -26,8 +25,6 @@ export async function getUserTrackedDataBarChart(id: string) {
       ),
     )
     .orderBy(desc(activities.timestamp));
-
-  console.timeEnd(timerLabel);
 
   return result;
 }
