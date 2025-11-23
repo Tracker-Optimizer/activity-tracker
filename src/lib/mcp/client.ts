@@ -22,14 +22,14 @@ export interface MCPResponse<T = unknown> {
 export async function callMCPTool<T = unknown>(
   toolName: string,
   params: MCPToolParams,
-  sessionCookie: string,
+  sessionToken: string,
 ): Promise<MCPResponse<T>> {
   try {
     const response = await fetch(`${MCP_SERVER_URL}/mcp/tools/${toolName}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Cookie: sessionCookie,
+        "X-Session-Token": sessionToken,
       },
       body: JSON.stringify(params),
     });

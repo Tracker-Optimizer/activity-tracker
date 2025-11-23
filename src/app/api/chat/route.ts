@@ -4,6 +4,7 @@ import { convertToModelMessages, streamText, tool } from "ai";
 import { z } from "zod";
 import { auth } from "@/lib/auth/auth";
 import { callMCPTool } from "@/lib/mcp/client";
+import { extractSessionToken } from "@/lib/mcp/session-token";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -18,6 +19,10 @@ export async function POST(req: Request) {
 
   // 2. Get session cookie to forward to MCP server
   const cookieHeader = req.headers.get("Cookie") || "";
+  const sessionToken = extractSessionToken(cookieHeader);
+  if (!sessionToken) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   // 3. Parse request body
   const { messages, model } = await req.json();
@@ -49,7 +54,7 @@ export async function POST(req: Request) {
           const result = await callMCPTool(
             "get_activity_summary",
             { days },
-            cookieHeader,
+            sessionToken,
           );
 
           if (!result.success) {
@@ -76,7 +81,7 @@ export async function POST(req: Request) {
           const result = await callMCPTool(
             "get_recent_activities",
             { limit },
-            cookieHeader,
+            sessionToken,
           );
 
           if (!result.success) {
@@ -100,7 +105,7 @@ export async function POST(req: Request) {
           const result = await callMCPTool(
             "get_daily_breakdown",
             { days },
-            cookieHeader,
+            sessionToken,
           );
 
           if (!result.success) {
@@ -130,7 +135,7 @@ export async function POST(req: Request) {
           const result = await callMCPTool(
             "get_process_stats",
             { days, limit },
-            cookieHeader,
+            sessionToken,
           );
 
           if (!result.success) {
