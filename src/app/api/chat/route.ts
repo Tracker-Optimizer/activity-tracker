@@ -19,7 +19,8 @@ export async function POST(req: Request) {
 
   // 2. Get session cookie to forward to MCP server
   const cookieHeader = req.headers.get("Cookie") || "";
-  const sessionToken = extractSessionToken(cookieHeader);
+  const sessionToken =
+    session.session?.token ?? extractSessionToken(cookieHeader);
   if (!sessionToken) {
     return new Response("Unauthorized", { status: 401 });
   }
