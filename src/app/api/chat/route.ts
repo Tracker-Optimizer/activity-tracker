@@ -24,13 +24,15 @@ export async function POST(req: Request) {
 
   // Select model based on client request
   const selectedModel =
-    model === "gemini-1.5-pro"
-      ? google("gemini-1.5-pro-latest")
+    model === "gemini-2.5-flash"
+      ? google("gemini-2.5-flash")
       : openai("gpt-4-turbo");
 
   // 4. Define AI SDK tools that call MCP tools
   const result = streamText({
     model: selectedModel,
+    system:
+      "You are Tracker, a proactive productivity assistant. When you call tools, always read their outputs and then provide a concise, human-friendly response that summarizes the findings, highlighting key numbers and trends. Never stop after a tool call—always follow up with a clear explanation or recommendation for the user.",
     messages: convertToModelMessages(messages),
     tools: {
       get_activity_summary: tool({

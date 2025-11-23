@@ -6,9 +6,9 @@ import { useState } from "react";
 import { Chat as ChatUI } from "@/components/ui/chat";
 
 export default function Chat() {
-  const [model, setModel] = useState("gemini-1.5-pro");
+  const [model, setModel] = useState("gemini-2.5-flash");
 
-  const { messages, sendMessage, addToolOutput, status, stop } = useChat({
+  const { messages, sendMessage, status } = useChat({
     sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
   });
 
@@ -25,24 +25,17 @@ export default function Chat() {
     setInput("");
   };
 
-  const append = (message: { role: "user"; content: string }) => {
-    sendMessage({ text: message.content }, { body: { model } });
-  };
-
   const isLoading = status === "submitted" || status === "streaming";
 
   return (
     <div className="flex flex-col h-full overflow-hidden my-4">
       <ChatUI
         className="h-full"
-        messages={messages as any}
+        messages={messages}
         input={input}
         handleInputChange={handleInputChange}
         handleSubmit={handleSubmit}
         isGenerating={isLoading}
-        stop={stop}
-        append={append}
-        addToolOutput={addToolOutput}
         model={model}
         onModelChange={setModel}
       />

@@ -4,8 +4,6 @@ import { activities } from "@/drizzle/schemas";
 import { startOfDay } from "@/lib/utils/charts";
 
 export async function getUserTrackedDataBarChart(id: string) {
-  const timerLabel = `chart:query:${id}`;
-
   const today = startOfDay(new Date());
   const rangeStart = new Date(today);
   rangeStart.setDate(rangeStart.getDate() - (7 - 1));
