@@ -23,6 +23,7 @@ export async function callMCPTool<T = unknown>(
   toolName: string,
   params: MCPToolParams,
   sessionToken: string,
+  cookieHeader?: string,
 ): Promise<MCPResponse<T>> {
   try {
     const response = await fetch(`${MCP_SERVER_URL}/mcp/tools/${toolName}`, {
@@ -30,6 +31,7 @@ export async function callMCPTool<T = unknown>(
       headers: {
         "Content-Type": "application/json",
         "X-Session-Token": sessionToken,
+        ...(cookieHeader ? { Cookie: cookieHeader } : {}),
       },
       body: JSON.stringify(params),
     });

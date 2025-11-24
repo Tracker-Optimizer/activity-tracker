@@ -56,6 +56,7 @@ export async function POST(req: Request) {
             "get_activity_summary",
             { days },
             sessionToken,
+            cookieHeader,
           );
 
           if (!result.success) {
@@ -83,6 +84,7 @@ export async function POST(req: Request) {
             "get_recent_activities",
             { limit },
             sessionToken,
+            cookieHeader,
           );
 
           if (!result.success) {
@@ -107,6 +109,7 @@ export async function POST(req: Request) {
             "get_daily_breakdown",
             { days },
             sessionToken,
+            cookieHeader,
           );
 
           if (!result.success) {
@@ -137,6 +140,7 @@ export async function POST(req: Request) {
             "get_process_stats",
             { days, limit },
             sessionToken,
+            cookieHeader,
           );
 
           if (!result.success) {
