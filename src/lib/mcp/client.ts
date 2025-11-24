@@ -3,6 +3,7 @@
  */
 
 const MCP_SERVER_URL = process.env.MCP_SERVER_URL || "http://localhost:8787";
+const MCP_SERVICE_TOKEN = process.env.MCP_SERVICE_TOKEN;
 
 export interface MCPToolParams {
   days?: number;
@@ -22,16 +23,19 @@ export interface MCPResponse<T = unknown> {
 export async function callMCPTool<T = unknown>(
   toolName: string,
   params: MCPToolParams,
-  sessionToken: string,
-  cookieHeader?: string,
+  userId: string,
 ): Promise<MCPResponse<T>> {
+  if (!MCP_SERVICE_TOKEN) {
+    throw new Error("MCP_SERVICE_TOKEN is not configured");
+  }
+
   try {
     const response = await fetch(`${MCP_SERVER_URL}/mcp/tools/${toolName}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Session-Token": sessionToken,
-        ...(cookieHeader ? { Cookie: cookieHeader } : {}),
+        Authorization: `Bearer ${MCP_SERVICE_TOKEN}`,
+        "X-User-Id": userId,
       },
       body: JSON.stringify(params),
     });

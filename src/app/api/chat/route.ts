@@ -4,7 +4,6 @@ import { convertToModelMessages, streamText, tool } from "ai";
 import { z } from "zod";
 import { auth } from "@/lib/auth/auth";
 import { callMCPTool } from "@/lib/mcp/client";
-import { extractSessionToken } from "@/lib/mcp/session-token";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -17,13 +16,7 @@ export async function POST(req: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  // 2. Get session cookie to forward to MCP server
-  const cookieHeader = req.headers.get("Cookie") || "";
-  const sessionToken =
-    session.session?.token ?? extractSessionToken(cookieHeader);
-  if (!sessionToken) {
-    return new Response("Unauthorized", { status: 401 });
-  }
+  const userId = session.user.id;
 
   // 3. Parse request body
   const { messages, model } = await req.json();
@@ -34,6 +27,10 @@ export async function POST(req: Request) {
       ? google("gemini-2.5-flash")
       : openai("gpt-4-turbo");
 
+  console.log(
+    "[chat api] MCP token prefix:",
+    process.env.MCP_SERVICE_TOKEN?.slice(0, 8),
+  );
   // 4. Define AI SDK tools that call MCP tools
   const result = streamText({
     model: selectedModel,
@@ -55,8 +52,7 @@ export async function POST(req: Request) {
           const result = await callMCPTool(
             "get_activity_summary",
             { days },
-            sessionToken,
-            cookieHeader,
+            userId,
           );
 
           if (!result.success) {
@@ -83,8 +79,7 @@ export async function POST(req: Request) {
           const result = await callMCPTool(
             "get_recent_activities",
             { limit },
-            sessionToken,
-            cookieHeader,
+            userId,
           );
 
           if (!result.success) {
@@ -108,8 +103,7 @@ export async function POST(req: Request) {
           const result = await callMCPTool(
             "get_daily_breakdown",
             { days },
-            sessionToken,
-            cookieHeader,
+            userId,
           );
 
           if (!result.success) {
@@ -139,8 +133,7 @@ export async function POST(req: Request) {
           const result = await callMCPTool(
             "get_process_stats",
             { days, limit },
-            sessionToken,
-            cookieHeader,
+            userId,
           );
 
           if (!result.success) {
