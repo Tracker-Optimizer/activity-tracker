@@ -78,6 +78,37 @@ GITHUB_CLIENT_ID=xxxx
 GITHUB_CLIENT_SECRET=xxxx
 ```
 
+### MCP Server (for AI features)
+
+The MCP server provides AI-powered analytics and insights. For local development:
+
+```bash
+# Local MCP server URL (default for mcp-activity-tracker)
+MCP_SERVER_URL=http://localhost:8787/mcp
+
+# Shared service token for secure communication
+MCP_SERVICE_TOKEN=your-secure-random-token
+```
+
+Generate a secure service token:
+
+```bash
+openssl rand -base64 32
+```
+
+**Important**: The same `MCP_SERVICE_TOKEN` must be configured in both:
+- `activity-tracker/.env` (this file)
+- `mcp-activity-tracker/.dev.vars` (MCP server local config)
+
+See [mcp-activity-tracker README](../mcp-activity-tracker/README.md) for MCP server setup.
+
+### AI Providers (optional)
+
+```bash
+OPENAI_API_KEY=xxxxxx
+GOOGLE_GENERATIVE_AI_API_KEY=xxxxxx
+```
+
 ## 4. Database Setup (Drizzle ORM)
 
 Push the schema to the database:
@@ -98,7 +129,28 @@ You should see tables such as:
 • session
 • account
 
-## 5. Start the Development Server
+## 5. Running with MCP Server (Optional)
+
+To use AI features, you need to run both services locally:
+
+**Terminal 1 - MCP Server:**
+```bash
+cd ../mcp-activity-tracker
+pnpm dev
+# Server runs on http://localhost:8787
+```
+
+**Terminal 2 - Web App:**
+```bash
+pnpm dev
+# App runs on http://localhost:3000
+```
+
+The web app will automatically connect to the MCP server using the configured `MCP_SERVER_URL` and `MCP_SERVICE_TOKEN`.
+
+## 6. Start the Development Server (Without MCP)
+
+If you don't need AI features, you can run just the web app:
 
 ```bash
 pnpm dev
@@ -110,9 +162,9 @@ Visit the application at:
 http://localhost:3000
 ```
 
-## 6. Troubleshooting
+## 7. Troubleshooting
 
-Error: relation “user” does not exist
+### Error: relation "user" does not exist
 
 Run the migrations:
 
@@ -133,6 +185,16 @@ The user already exists. Use sign-in instead.
 
 The `.env` file is not being loaded.
 Check file name, path, or formatting.
+
+### Error: MCP_SERVICE_TOKEN is not configured
+
+Make sure you have set `MCP_SERVICE_TOKEN` in your `.env` file and it matches the token in `mcp-activity-tracker/.dev.vars`.
+
+### Error: Failed to connect to MCP server
+
+1. Ensure the MCP server is running: `cd ../mcp-activity-tracker && pnpm dev`
+2. Verify `MCP_SERVER_URL` is set correctly (default: `http://localhost:8787/mcp`)
+3. Check that both services use the same `MCP_SERVICE_TOKEN`
 
 ## Project Structure
 
